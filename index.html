@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            text-shadow: 2px 2px 4px #000000;
+            animation: fadeIn 2s;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 1em;
+            color: white;
+            background-color: rgba(0, 128, 128, 0.7);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 2px 2px 4px #000000;
+            animation: bounce 2s infinite;
+        }
+        button:hover {
+            background-color: rgba(0, 128, 128, 1);
+        }
+        .content {
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px #000000;
+            animation: slideIn 1s;
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+        .contact-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .contact-info p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-info a {
+            color: #00ced1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .contact-info img {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+        }
+        .profile-pic {
+            margin: 20px 0;
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .profile-pic input[type="file"] {
+            display: none;
+        }
+        .upload-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .upload-icon img {
+            width: 60%;
+            height: 60%;
+        }
+        .coding-animation {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2em;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+            color: #00ff00;
+            white-space: pre-wrap;
+            text-align: left;
+            width: 80%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+    <script>
+        function toggleContent() {
+            var content = document.getElementById('extraContent');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+            } else {
+                content.classList.add('hidden');
+            }
+        }
+
+        function previewFile() {
+            const preview = document.getElementById('profileImage');
+            const file = document.getElementById('profilePicInput').files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                const base64String = reader.result;
+                localStorage.setItem('profileImage', base64String);
+                preview.src = base64String;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadProfileImage() {
+            const profileImage = localStorage.getItem('profileImage');
+            if (profileImage) {
+                document.getElementById('profileImage').src = profileImage;
+            }
+        }
+
+        window.onload = function() {
+            loadProfileImage();
+            typeAnimation();
+        }
+
+        function typeAnimation() {
+            const codeLines = [
+                'print("Gaurav Joshi")',
+            ];
+
+            let i = 0;
+            let j = 0;
+            const element = document.getElementById('codingAnimation');
+            const typingSpeed = 100;
+
+            function type() {
+                if (i < codeLines.length) {
+                    if (j < codeLines[i].length) {
+                        element.textContent += codeLines[i].charAt(j);
+                        j++;
+                        setTimeout(type, typingSpeed);
+                    }
+                }
+            }
+
+            type();
+        }
+    </script>
+</head>
+<body>
+    <div class="content">
+        <h1>My Portfolio</h1>
+        <p></p>
+        <div class="profile-pic">
+            <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile Picture">
+            <label for="profilePicInput" class="upload-icon">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/camera.png" alt="Upload Icon">
+            </label>
+            <input type="file" id="profilePicInput" onchange="previewFile()" accept="image/*">
+        </div>
+        <button onclick="toggleContent()">Click for more info👆</button>
+        <div id="extraContent" class="hidden">
+            <h2>About Me</h2>
+            <p>I am a B.Tech student pursuing a degree in Data Science. I am passionate about data analysis, machine learning, and AI.</p>
+            <h2>Skills</h2>
+            <ul>
+                <li>Data Analysis</li>
+                <li>Machine Learning</li>
+                <li>Artificial Intelligence</li>
+                <li>Python Programming</li>
+                <li>Data Visualization</li>
+            </ul>
+            <h2>Contact Information</h2>
+            <div class="contact-info">
+                <p><a href="mailto:gaurav157joshi@gmail.com"><img src="https://img.icons8.com/ios-filled/50/ffffff/email.png" alt="Email Icon">gaurav157joshi@gmail.com</a></p>
+                <p><a href="tel:+7793016698"><img src="https://img.icons8.com/ios-filled/50/ffffff/phone.png" alt="Phone Icon">7793016698</a></p>
+                <p><a href="https://github.com/gauravjoshi157" target="_blank"><img src="https://img.icons8.com/ios-filled/50/ffffff/github.png" alt="GitHub Icon">github.com/gauravjoshi157</a></p>
+                <p><a href="https://www.linkedin.com/in/gaurav-joshi-254269229/" target="_blank"><img src="https://img.icons8.com/ios-filled/50/ffffff/linkedin.png" alt="LinkedIn Icon">linkedin.com/in/gaurav-joshi-254269229</a></p>
+            </div>
+        </div>
+        <div id="codingAnimation" class="coding-animation"></div>
+    </div>
+</body>
+</html>
