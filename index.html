@@ -197,9 +197,9 @@
         }
 
         function loadProfileImage() {
-            const profileImage = localStorage.getItem('profileImage');
-            if (profileImage) {
-                document.getElementById('profileImage').src = profileImage;
+            const profileImage = localStorage.getItem('profileImage') || 'https://github.com/gauravjoshi157/gauravjoshi157/blob/main/WhatsApp%20Image%202024-07-12%20at%2023.44.41_f0aa9c32.jpg?raw=true';
+            document.getElementById('profileImage').src = profileImage;
+            if (localStorage.getItem('profileImage')) {
                 document.getElementById('profilePicInput').disabled = true; // Disable input if image already loaded
                 document.getElementById('uploadLabel').style.display = 'none'; // Hide upload label if image already loaded
             }
@@ -261,7 +261,7 @@
                 line.textContent = codeLines[Math.floor(Math.random() * codeLines.length)];
                 line.style.top = `${Math.random() * 100}%`;
                 line.style.left = `${Math.random() * 100}%`;
-                line.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                line.style.animationDuration = `${Math.random() * 5 + 5}s`; // Random duration between 5s to 10s
                 background.appendChild(line);
             }
         }
@@ -273,7 +273,7 @@
         <h1>My Portfolio</h1>
         <p>Gaurav Joshi</p>
         <div class="profile-pic">
-            <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile Picture">
+            <img id="profileImage" src="" alt="Profile Picture">
             <label id="uploadLabel" for="profilePicInput" class="upload-icon">
                 <img src="https://img.icons8.com/ios-filled/50/ffffff/camera.png" alt="Upload Icon">
             </label>
