@@ -142,7 +142,8 @@
             position: absolute;
             white-space: nowrap;
             font-family: 'Courier New', Courier, monospace;
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(0, 255, 0, 0.3); /* Hacker green */
+            font-size: 1.5em; /* Increased font size for better visibility */
             animation: scroll 10s linear infinite;
         }
         @keyframes scroll {
@@ -243,16 +244,23 @@
                 '# Data Science is fun!',
                 'for i in range(10):',
                 '    print(i)',
-                'print("Gaurav Joshi")'
+                'print("Hacker Screen")',
+                'print("Running...")',
+                'access_granted = True',
+                'for char in "Hacker":',
+                '    print(char)',
+                'import os',
+                'os.system("ls -la")'
             ];
 
             const background = document.querySelector('.background-animation');
 
-            for (let i = 0; i < codeLines.length; i++) {
+            for (let i = 0; i < 100; i++) { // Increase number of lines for a more filled effect
                 const line = document.createElement('div');
                 line.className = 'line';
-                line.textContent = codeLines[i];
-                line.style.top = `${i * 20}px`;
+                line.textContent = codeLines[Math.floor(Math.random() * codeLines.length)];
+                line.style.top = `${Math.random() * 100}%`;
+                line.style.left = `${Math.random() * 100}%`;
                 line.style.animationDuration = `${Math.random() * 10 + 5}s`;
                 background.appendChild(line);
             }
