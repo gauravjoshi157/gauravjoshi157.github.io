@@ -1,0 +1,30 @@
+name: Generate Snake
+
+on:
+  schedule: # Run at 12am UTC every day
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Generate snake animation
+        uses: Platane/snk@master
+        with:
+          github_user_name: gauravjoshi157
+          svg_out_path: dist/github-snake.svg
+
+      - name: Commit and push if snake animation has changed
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Update snake animation"
+            git push
+          fi
