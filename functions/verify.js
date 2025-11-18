@@ -1,7 +1,7 @@
 export async function onRequestPost(context) {
     const { token } = await context.request.json();
-    
-    const secret = "0x4AAAAAACBjgDzX2JiTFHtPs0fri2Y5aU8";
+
+    const secret = "0x4AAAAAACBjgDzX2JiTFHtPs0fri2Y5aU8"; // <-- ONE LINE ONLY
 
     const formData = new FormData();
     formData.append("secret", secret);
