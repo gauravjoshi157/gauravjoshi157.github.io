@@ -3,33 +3,108 @@
 <head>
   <title>Verification</title>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #5568d3;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .error {
+      color: #e74c3c;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
     <h2>Please verify to continue</h2>
 
     <form id="verifyForm">
         <div class="cf-turnstile" data-sitekey="0x4AAAAAACBjgFIqQIjExRrt"></div>
-        <button type="submit">Enter Protdolio</button>
+        <button type="submit" id="submitBtn">Enter Portfolio</button>
     </form>
+    
+    <div id="errorMsg" class="error"></div>
+  </div>
 
-    <script>
-        document.getElementById('verifyForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const token = document.querySelector('[name="cf-turnstile-response"]').value;
+  <script>
+    document.getElementById('verifyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const errorMsg = document.getElementById('errorMsg');
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Verifying...';
+      errorMsg.textContent = '';
+      
+      const token = document.querySelector('[name="cf-turnstile-response"]').value;
+      
+      if (!token) {
+        errorMsg.textContent = 'Please complete the CAPTCHA';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enter Portfolio';
+        return;
+      }
 
-            const res = await fetch('/api/verify', {
-                method: 'POST',
-                body: JSON.stringify({ token }),
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            const data = await res.json();
-            if (data.success) {
-                window.location.href = "/home.html";
-            } else {
-                alert("Captcha failed. Try again.");
-            }
+      try {
+        const res = await fetch('/api/verify', {
+          method: 'POST',
+          body: JSON.stringify({ token }),
+          headers: { 'Content-Type': 'application/json' }
         });
-    </script>
+
+        const data = await res.json();
+        
+        if (data.success) {
+          window.location.href = "/home.html";
+        } else {
+          errorMsg.textContent = 'Verification failed. Please try again.';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enter Portfolio';
+          // Reset the turnstile widget
+          turnstile.reset();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        errorMsg.textContent = 'An error occurred. Please try again.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enter Portfolio';
+      }
+    });
+  </script>
 </body>
 </html>
