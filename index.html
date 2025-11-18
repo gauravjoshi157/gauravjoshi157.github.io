@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verification</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+    <h2>Please verify to continue</h2>
+
+    <form id="verifyForm">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAACBjgFIqQIjExRrt
+"></div>
+        <button type="submit">Enter Website</button>
+    </form>
+
+    <script>
+        document.getElementById('verifyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = document.querySelector('[name="cf-turnstile-response"]').value;
+
+            const res = await fetch('/api/verify', {
+                method: 'POST',
+                body: JSON.stringify({ token }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                window.location.href = "/home.html";
+            } else {
+                alert("Captcha failed. Try again.");
+            }
+        });
+    </script>
+</body>
+</html>
