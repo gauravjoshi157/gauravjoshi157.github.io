@@ -3,7 +3,7 @@ export async function onRequestPost(context) {
         const { token } = await context.request.json();
 
         // Use environment variable instead of hardcoding
-        const secret = context.env.TURNSTILE_SECRET_KEY || "0x4AAAAAACBjgDzX2JiTFHtPs0fri2Y5aU8";
+        const secret = context.env.TURNSTILE_SECRET_KEY || "0x4AAAAAACCJ0kpTFzrTTabxZfAtKBwYtOc";
 
         const body = new URLSearchParams();
         body.append("secret", secret);
